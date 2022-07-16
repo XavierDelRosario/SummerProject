@@ -12,16 +12,18 @@ public class ProjectileBehaviour : MonoBehaviour
     private Rigidbody rb;
     void Start()
     {
-        rb = this.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        Destroy(gameObject, lifeSpan);
     }
     void FixedUpdate()
     {
-       rb.MovePosition(this.transform.position + shootDir * moveSpeed * Time.fixedDeltaTime); 
+       rb.MovePosition(transform.position + shootDir * moveSpeed * Time.fixedDeltaTime); 
     }
-    /*
-      Receives direction to travel
-     */
-    public void ReceiveDirection(Vector3 shootDir)
+    /// <summary>
+    /// Sets the direction the projectile will travel
+    /// </summary>
+    /// <param name="shootDir"></param>
+    public void SetDirection(Vector3 shootDir)
     {
         this.shootDir = shootDir;
     }

@@ -32,12 +32,12 @@ public class CinemachineBehaviour : MonoBehaviour
         cam = GameObject.Find("VirtualCamera");
         virtualCam = cam.GetComponent<CinemachineFreeLook>();
 
-        cinemachine = this.GetComponent<CinemachineBrain>();
+        cinemachine = GetComponent<CinemachineBrain>();
         lookTarget = GameObject.Find("PlayerLookForward").transform;
     }
     private void Update()
     {
-        isCasting = playerCast.IsCasting;
+       
     }
     // Update is called once per frame
     void LateUpdate()

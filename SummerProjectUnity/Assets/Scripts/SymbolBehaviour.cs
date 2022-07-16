@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class SymbolBehaviour : MonoBehaviour
 {
+    //Manages the UI of symbol in Casting UI. 
     #region Fields
     [SerializeField] private string symbolID;
     [SerializeField] private Color defaultBlue = new Color(0f, 0f, 1f, 1f);
@@ -17,7 +18,7 @@ public class SymbolBehaviour : MonoBehaviour
     void Start()
     {
         playerCast = GameObject.Find("Player").GetComponent<PlayerCast>();
-        image = this.GetComponent<RawImage>();
+        image = GetComponent<RawImage>();
     }
     private void OnEnable()
     {
@@ -25,7 +26,27 @@ public class SymbolBehaviour : MonoBehaviour
     }
     private void Update()
     {
-        if (isSelected)
+        highlight(image, isSelected);
+    }
+    /// <summary>
+    /// Sends the symbol value to PlayerCast spellID
+    /// </summary>
+    private void SendValue()
+    {
+        if (!isSelected)
+        {
+            playerCast.spellID += symbolID;
+            isSelected = true;
+        } 
+    }
+    /// <summary>
+    ///  Highlights an image based on given bool
+    /// </summary>
+    /// <param name="image"></param>
+    /// <param name="shouldHighlight"></param>
+    private void highlight(RawImage image, bool shouldHighlight)
+    {
+        if (shouldHighlight)
         {
             image.color = highlightBlue;
         }
@@ -33,16 +54,5 @@ public class SymbolBehaviour : MonoBehaviour
         {
             image.color = defaultBlue;
         }
-    }
-    /*
-     Sends the symbols value to the current spellID
-     */
-    public void SendValue()
-    {
-        if (!isSelected)
-        {
-            playerCast.SpellID += symbolID;
-            isSelected = true;
-        } 
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     //Elden Ring Movement using Rigidbody. Camera dependent movement Use with Cinemachine on Camera.
     public float MoveSpeed = 100f;

@@ -6,39 +6,29 @@ using UnityEngine;
 public class CameraBehaviour : MonoBehaviour
 {   //Controls Camera settings.
     #region Fields
-    [SerializeField] private Vector3 CamOffset = new Vector3(0f, 1.2f, -2.6f);
-
-    private PlayerCast playerCast;
+    private PlayerState playerState;
     private CinemachineFreeLook virtualCam;
     private bool isCasting;
     #endregion
     void Start()
     {
-        playerCast = GameObject.Find("Player").GetComponent<PlayerCast>();
+        playerState = GameObject.Find("Player").GetComponent<PlayerState>();
         virtualCam = GameObject.Find("Virtual_Camera").GetComponent<CinemachineFreeLook>();
     }
     private void Update()
     {
-        isCasting = playerCast.IsCasting;
+        isCasting = playerState.IsCasting;
     }
     void LateUpdate()
     {
         CinemachineCore.GetInputAxis = GetAxisCustom;
-        if (isCasting)
-        {
-            virtualCam.m_RecenterToTargetHeading.m_enabled = true;
-            virtualCam.m_YAxisRecentering.m_enabled = true;           
-        }
-        else
-        {
-            virtualCam.m_RecenterToTargetHeading.m_enabled = false;
-            virtualCam.m_YAxisRecentering.m_enabled = false;
-        } 
+        CenterCam(isCasting);
     }
-
-    /* 
-     Disables freelook with mouse if player is casting a spell.
-    */ 
+    /// <summary>
+    /// Disables freelook with mouse if player is casting a spell.
+    /// </summary>
+    /// <param name="axisName"></param>
+    /// <returns></returns>
     public float GetAxisCustom(string axisName)
     {   
          if (axisName == "Mouse X")
@@ -64,5 +54,14 @@ public class CameraBehaviour : MonoBehaviour
               }
          }
          return UnityEngine.Input.GetAxis(axisName);
+    }
+    /// <summary>
+    /// Recenters the camera to face forward depending on given bool.
+    /// </summary>
+    /// <param name="shouldRecenter"></param>
+    private void CenterCam(bool shouldRecenter)
+    {
+        virtualCam.m_RecenterToTargetHeading.m_enabled = shouldRecenter;
+        virtualCam.m_YAxisRecentering.m_enabled = shouldRecenter;
     }
 }

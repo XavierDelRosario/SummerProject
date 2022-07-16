@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4935609565341945974
+--- !u!1 &1853516015439981787
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4935609565341945930}
-  - component: {fileID: 4935609565341945931}
-  - component: {fileID: 4935609565341945972}
-  - component: {fileID: 4935609565341945973}
-  - component: {fileID: 4935609565341945929}
-  - component: {fileID: 532340812413670691}
+  - component: {fileID: 1853516015439981799}
+  - component: {fileID: 1853516015439981798}
+  - component: {fileID: 1853516015439981785}
+  - component: {fileID: 1853516015439981784}
+  - component: {fileID: 1853516015439981796}
+  - component: {fileID: 6531500824368654734}
   m_Layer: 0
-  m_Name: Rockball
+  m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4935609565341945930
+--- !u!4 &1853516015439981799
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7, y: 1.71, z: 3.3}
+  m_LocalPosition: {x: 0, y: 1.71, z: 3.3}
   m_LocalScale: {x: 0.86006474, y: 0.6781891, z: 1.1783751}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4935609565341945931
+--- !u!33 &1853516015439981798
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4935609565341945972
+--- !u!23 &1853516015439981785
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 34ba249ead87f4e4db29514dd68ed4f9, type: 2}
+  - {fileID: 2100000, guid: ec4638d2bebe2aa44808cb7940b732bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,41 +86,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4935609565341945973
+--- !u!135 &1853516015439981784
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4935609565341945929
+--- !u!114 &1853516015439981796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d2813fd63a801443b3e64ce3119d11d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  lifeSpan: 10
+  lifeSpan: 15
   damage: 0
---- !u!54 &532340812413670691
+--- !u!54 &6531500824368654734
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4935609565341945974}
+  m_GameObject: {fileID: 1853516015439981787}
   serializedVersion: 2
   m_Mass: 0.0000001
   m_Drag: 0

@@ -4,18 +4,53 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerState : MonoBehaviour
 {
+    //Listens to player inputs and determines player state.
+    #region Fields
+    [SerializeField] public LayerMask groundLayer;
+    [SerializeField] private float distanceToGround = 0.1f;
+
+    private CapsuleCollider col;
     private PlayerInputActions playerInputActions;
     private InputAction movement;
-   
-    public bool isCasting { get; private set; }
-    public bool isFiring { get; private set; }
-    public bool isMoving { get; private set; }
-    public bool isJumping { get; private set; }
-    public Vector2 inputDirection { get; private set; }
-
+    private bool isCasting;
+    private bool isFiring;
+    private bool isJumping;
+    private Vector2 inputDirection;
+    #endregion
+    #region Properties
+    public bool IsCasting 
+    {   get 
+        {
+            return isCasting;
+        }
+    }
+    public bool IsFiring 
+    {    get 
+        { 
+            return isFiring; 
+        }
+    }
+    public bool IsJumping
+    {
+        get
+        { 
+            return isJumping;
+        }
+    }
+    public Vector2 InputDirection
+    {
+        get
+        {
+            return inputDirection;
+        }
+    }
+    #endregion
+    #region LifeCycle Methods
     private void Awake()
     {
         playerInputActions = new PlayerInputActions();
+        col = GetComponent<CapsuleCollider>();
+
     }
     private void OnEnable()
     {
@@ -31,8 +66,8 @@ public class PlayerState : MonoBehaviour
 
         playerInputActions.Player.Cast.performed += Cast;
         playerInputActions.Player.Cast.canceled += Cast;
-
     }
+
     private void OnDisable()
     {
         playerInputActions.Player.Disable();
@@ -46,6 +81,12 @@ public class PlayerState : MonoBehaviour
         playerInputActions.Player.Jump.started -= Cast;
         playerInputActions.Player.Jump.canceled -= Cast;
     }
+    private void Update()
+    {
+        inputDirection = movement.ReadValue<Vector2>();
+    }
+    #endregion
+    #region Methods
     private void Jump(InputAction.CallbackContext context)
     {
         isJumping = context.ReadValueAsButton();
@@ -58,10 +99,17 @@ public class PlayerState : MonoBehaviour
     {
         isCasting = context.ReadValueAsButton();
     }
-    private void Update()
+    /// <summary>
+    /// Adds jump force if the given jump input and player is grounded
+    /// </summary>
+    /// <returns></returns>
+    public bool IsGrounded()
     {
-        inputDirection = movement.ReadValue<Vector2>();
+        Vector3 capsuleBottom = new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z);
+        bool grounded = Physics.CheckCapsule(col.bounds.center, capsuleBottom, distanceToGround, groundLayer, QueryTriggerInteraction.Ignore);
+        return grounded;
     }
+    #endregion
 }
 
 

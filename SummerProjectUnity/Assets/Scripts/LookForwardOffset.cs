@@ -12,11 +12,10 @@ public class LookForwardOffset : MonoBehaviour
         cam = GameObject.Find("Main_Camera").transform;
         target = GameObject.Find("Player").transform;
     }
-
     void Update()
     {
         float angle = cam.eulerAngles.y;
-        this.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-        this.transform.position = target.position;
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        transform.position = target.position;
     }
 }
