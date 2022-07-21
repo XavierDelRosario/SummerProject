@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, IDamageable
 {
+    //Manages player info such as health and mana.
+    #region Fields
     [SerializeField] private float maxHealth;
     [SerializeField] private float maxMana;
     [SerializeField] private float manaRegenRate;
     [SerializeField] private float moveSpeed;
+
+    private PlayerState playerState;
+
     private float currentHealth;
     private float currentMana;
     private int currency;
+    #endregion
     #region Properties
     public float MaxHealth
     {
@@ -47,10 +53,13 @@ public class PlayerStats : MonoBehaviour
             return moveSpeed;
         }
     }
-   
+
     #endregion
+    #region LifeCycle Methods
     void Start()
     {
+        playerState = GameObject.Find("Player").GetComponent<PlayerState>();
+
         currentHealth = maxHealth;
         currentMana = maxMana;
     }
@@ -58,8 +67,9 @@ public class PlayerStats : MonoBehaviour
     {
         GainManaOverTime();
     }
-
+    #endregion
     #region Methods
+    #region Health
     /// <summary>
     /// Increases player's currentHealth by healAmount upto maxHealth
     /// </summary>
@@ -74,8 +84,13 @@ public class PlayerStats : MonoBehaviour
     /// <param name="damage"></param>
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        if (!playerState.IsInvincible)
+        {
+            currentHealth -= damage;
+        }
     }
+    #endregion
+    #region Mana
     /// <summary>
     /// Checks if player has more currentMana than manaCost
     /// </summary>
@@ -100,5 +115,6 @@ public class PlayerStats : MonoBehaviour
     {
         currentMana = Mathf.Min(maxMana, currentMana += manaRegenRate * Time.deltaTime);
     }
+    #endregion
     #endregion
 }

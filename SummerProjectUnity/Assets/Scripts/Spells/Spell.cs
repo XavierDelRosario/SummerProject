@@ -13,14 +13,13 @@ public class Spell
     private string spellID;
     private float manaCost;
     private GameObject spellObject;
-    private int spellType;
-    private int usedCounter;
+    private SpellType spellType;
     public Spell(string spellID, float manaCost, GameObject spellObject, SpellType spellType)
     {
         this.spellID = spellID;
         this.manaCost = manaCost;
         this.spellObject = spellObject;
-        this.spellType = (int)spellType;
+        this.spellType = spellType;
     }
     #region Properties
     public float ManaCost
@@ -44,7 +43,7 @@ public class Spell
             return spellObject;
         }
     }
-    public int SpellTypeValue
+    public SpellType SpellTypeValue
     {
         get
         {

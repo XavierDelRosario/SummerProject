@@ -7,15 +7,20 @@ public class PlayerState : MonoBehaviour
     //Listens to player inputs and determines player state.
     #region Fields
     [SerializeField] public LayerMask groundLayer;
-    [SerializeField] private float distanceToGround = 0.1f;
+    private float distanceToGround = 0.1f;
 
     private CapsuleCollider col;
     private PlayerInputActions playerInputActions;
     private InputAction movement;
+
+    //States controlled by input
     private bool isCasting;
     private bool isFiring;
     private bool isJumping;
+    private bool isRolling;
     private Vector2 inputDirection;
+
+    private bool isInvincible;
     #endregion
     #region Properties
     public bool IsCasting 
@@ -37,11 +42,25 @@ public class PlayerState : MonoBehaviour
             return isJumping;
         }
     }
+    public bool IsRolling
+    {
+        get
+        {
+            return isRolling;
+        }
+    }
     public Vector2 InputDirection
     {
         get
         {
             return inputDirection;
+        }
+    }
+    public bool IsInvincible
+    {
+        get
+        {
+            return isInvincible;
         }
     }
     #endregion
@@ -50,7 +69,6 @@ public class PlayerState : MonoBehaviour
     {
         playerInputActions = new PlayerInputActions();
         col = GetComponent<CapsuleCollider>();
-
     }
     private void OnEnable()
     {
@@ -66,6 +84,9 @@ public class PlayerState : MonoBehaviour
 
         playerInputActions.Player.Cast.performed += Cast;
         playerInputActions.Player.Cast.canceled += Cast;
+
+        playerInputActions.Player.Roll.performed += Roll;
+        playerInputActions.Player.Roll.canceled += Roll;
     }
 
     private void OnDisable()
@@ -80,6 +101,9 @@ public class PlayerState : MonoBehaviour
 
         playerInputActions.Player.Jump.started -= Cast;
         playerInputActions.Player.Jump.canceled -= Cast;
+
+        playerInputActions.Player.Roll.performed -= Roll;
+        playerInputActions.Player.Roll.canceled -= Roll;
     }
     private void Update()
     {
@@ -87,6 +111,7 @@ public class PlayerState : MonoBehaviour
     }
     #endregion
     #region Methods
+    #region Input
     private void Jump(InputAction.CallbackContext context)
     {
         isJumping = context.ReadValueAsButton();
@@ -99,8 +124,13 @@ public class PlayerState : MonoBehaviour
     {
         isCasting = context.ReadValueAsButton();
     }
+    private void Roll(InputAction.CallbackContext context)
+    {
+        isRolling = context.ReadValueAsButton();
+    }
+    #endregion
     /// <summary>
-    /// Adds jump force if the given jump input and player is grounded
+    /// Checks if the player is touching ground
     /// </summary>
     /// <returns></returns>
     public bool IsGrounded()
@@ -108,6 +138,14 @@ public class PlayerState : MonoBehaviour
         Vector3 capsuleBottom = new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z);
         bool grounded = Physics.CheckCapsule(col.bounds.center, capsuleBottom, distanceToGround, groundLayer, QueryTriggerInteraction.Ignore);
         return grounded;
+    }
+    public void EnableInvincibility()
+    {
+        isInvincible = true;
+    }
+    public void DisableInvincibility()
+    {
+        isInvincible = false;
     }
     #endregion
 }

@@ -4,31 +4,37 @@ using UnityEngine;
 
 public class PlayerCast : MonoBehaviour
 {
-    //Determines when player is casting a spell. Keeps track of what that spell is.
+    //Keeps track of what spell the player is trying to cast
     #region Fields
     [SerializeField] private GameObject castingPoint;
     [SerializeField] private GameObject prefabParent;
     [SerializeField] private LayerMask aimColliderLayerMask;
-    public string spellID { get; set; }
-    private string savedSpellID = "";
-   
-    private Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+ 
+    private PlayerState playerState;
+    private PlayerStats playerStats;
+    private SpellLibrary spellLibrary;
+    private Spell spell;
+
     private GameObject cameraObject;
     private Camera cameraComponent;
-    private PlayerState playerState;
-    private PlayerSpells playerSpells;
-    private PlayerStats playerStats;
+
     private bool isCasting;
     private bool isFiring;
+    private Vector2 screenCenter;
+
+    public string spellID { get; set; }
+    public float manaCost { get; set; }
     #endregion
     private void Start()
     {
+        playerState = GameObject.Find("Player").GetComponent<PlayerState>();
+        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        spellLibrary = GameObject.Find("Player").GetComponent<SpellLibrary>();
+
         cameraObject = GameObject.Find("Main_Camera");
         cameraComponent = cameraObject.GetComponent<Camera>();
 
-        playerState = GameObject.Find("Player").GetComponent<PlayerState>();
-        playerSpells = GameObject.Find("Player").GetComponent<PlayerSpells>();
-        playerStats = GameObject.Find("Player").GetComponent<PlayerStats>();
+        screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
     }
     void Update()
     {
@@ -37,37 +43,54 @@ public class PlayerCast : MonoBehaviour
 
         if (!isCasting)
         {
-            if (spellID != "")
-            {
-                savedSpellID = spellID;
-                castingPoint.SetActive(true);
-            }
-            spellID = "";
+            FindSpell();
         }
         if (isFiring)
         {
-            Cast(savedSpellID);
+            CastSpell();
         }
     }
     #region Methods
     /// <summary>
-    /// Casts a spell depending on the given ID.
+    /// Find a spell to save and remember.
+    /// </summary>
+    private void FindSpell()
+    { 
+            if (spellID != "")
+            {
+                spell = spellLibrary.FindSpell(spellID);
+                manaCost = spell.ManaCost;
+
+                castingPoint.SetActive(true);
+                spellID = "";
+            }
+    }
+    /// <summary>
+    /// Casts a spell if player has enough mana.
     /// </summary>
     /// <param name="spellID"></param>
-    private void Cast(string spellID)
-    {
-        Spell spell = playerSpells.FindSpell(spellID);
-        float manaCost = spell.ManaCost;
+    private void CastSpell()
+    {        
         if (playerStats.HasMana(manaCost))
         {
-            if (spell.SpellTypeValue == 0)
+            switch (spell.SpellTypeValue)
             {
-                SpawnProjectile(spell.SpellObject);
+                case Spell.SpellType.Projectile:
+                    SpawnProjectile(spell.SpellObject);
+                    break;
+                case Spell.SpellType.Placeable:
+                    Debug.Log("Place object");
+                    break;
+                case Spell.SpellType.Special:
+                    Debug.Log("Do something special");
+                    break;
             }
             playerStats.UseMana(manaCost);
-            Debug.Log("Cast spell " + spellID);
-            savedSpellID = "";
+            manaCost = 0;
+            spell = spellLibrary.DefaultSpell();
+
             castingPoint.SetActive(false);
+          
         }
     }
     /// <summary>
@@ -81,12 +104,12 @@ public class PlayerCast : MonoBehaviour
             Quaternion quaternion = Quaternion.Euler(cameraObject.transform.eulerAngles.x, cameraObject.transform.eulerAngles.y, cameraObject.transform.eulerAngles.z);
             GameObject projectile = Instantiate(pfProjectile, castingPoint.transform.position, quaternion);
             Vector3 shootDir = (AimProjectile() - castingPoint.transform.position).normalized;
-            projectile.GetComponent<ProjectileBehaviour>().SetDirection(shootDir);
+            projectile.GetComponent<IShootable>().InitializeProjectile(shootDir, "Player");
             projectile.transform.SetParent(prefabParent.transform);
         }
     }
     /// <summary>
-    /// Returns the position of what the player is lookin at.
+    /// Returns the position of what the player is looking at.
     /// </summary>
     /// <returns></returns>
     private Vector3 AimProjectile()

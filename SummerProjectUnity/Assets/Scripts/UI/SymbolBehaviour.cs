@@ -12,9 +12,11 @@ public class SymbolBehaviour : MonoBehaviour
     [SerializeField] private Color highlightBlue = new Color(0f, 0.76f, 0.87f, 1f);
 
     private PlayerCast playerCast;
+
     private RawImage image;
     private bool isSelected = false;
     #endregion
+    #region LifeCycle Methods
     void Start()
     {
         playerCast = GameObject.Find("Player").GetComponent<PlayerCast>();
@@ -28,6 +30,8 @@ public class SymbolBehaviour : MonoBehaviour
     {
         highlight(image, isSelected);
     }
+    #endregion
+    #region Methods
     /// <summary>
     /// Sends the symbol value to PlayerCast spellID
     /// </summary>
@@ -55,4 +59,5 @@ public class SymbolBehaviour : MonoBehaviour
             image.color = defaultBlue;
         }
     }
+    #endregion
 }

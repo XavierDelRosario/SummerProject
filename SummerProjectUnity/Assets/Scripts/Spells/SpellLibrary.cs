@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpells : MonoBehaviour
+public class SpellLibrary : MonoBehaviour
 {
+    //Information for all possible player spells. Like prefabs;
     [Header("Projectiles")]
     [SerializeField] private GameObject fireBall;
     [SerializeField] private GameObject rockBall;
     [SerializeField] private GameObject giantFireBall;
     [SerializeField] private GameObject giantRockBall;
     [SerializeField] private GameObject waterBall;
+
     private Spell[] spellArray; 
     private void Awake()
     {
@@ -26,7 +28,7 @@ public class PlayerSpells : MonoBehaviour
     /// <summary>
     /// Finds the matching Spell from spellArray
     /// </summary>
-    /// <param name="spellID"> Searching for matching ID</param>
+    /// <param name="spellID"> ID to search for</param>
     /// <returns></returns>
     public Spell FindSpell(string spellID)
     {
@@ -35,10 +37,19 @@ public class PlayerSpells : MonoBehaviour
         {   
             if(spellID == spellArray[i].SpellID)
             {
-                 foundSpell = spellArray[i];
+                foundSpell = spellArray[i];
                 break; 
             }        
         }
         return foundSpell;
+    }
+    /// <summary>
+    ///  Returns a placeholder spell, this spell does nothing;
+    /// </summary>
+    /// <returns></returns>
+    public Spell DefaultSpell()
+    {
+        //spellArray[0] is the default spell if a spell is missing. It has no functionality except to be a placeholder.
+        return spellArray[0];
     }
 }

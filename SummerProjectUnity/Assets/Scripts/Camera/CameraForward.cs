@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class LookForwardOffset : MonoBehaviour
+public class CameraForward : MonoBehaviour
 {
-    //Moves empty Gameobject that follows the parent. This gameobject has a child which is always looking ahead where the camera is facing.
+    //Moves empty Gameobject that will always be the direction the camera is facing.
     private Transform target;
     private Transform cam;
     void Start()
